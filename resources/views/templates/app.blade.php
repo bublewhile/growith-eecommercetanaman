@@ -248,8 +248,6 @@
         {{-- User profile section --}}
         <div class="mt-auto text-center text-white small">
             <hr class="text-white">
-            <img src="https://ui-avatars.com/api/?name={{ Auth::user()->nama_lengkap ?? 'Guest' }}&background=3b6140&color=fff"
-                class="rounded-circle mb-2" width="60" height="60" alt="avatar">
             <div><strong>{{ Auth::user()->nama_lengkap ?? 'Guest' }}</strong></div>
             <div>{{ Auth::user()->email ?? '' }}</div>
         </div>
