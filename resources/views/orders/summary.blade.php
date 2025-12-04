@@ -86,7 +86,7 @@
             @foreach ($promos as $promo)
                 <option value="{{ $promo->id }}">
                     {{ $promo->promo_code }} -
-                    {{ $promo->type == 'percent' ? $promo->discount . '%' : 'Rp ' . number_format($promo->discount, 0, ',', '.') }}
+                    {{ $promo->type == 'percent' ? $promo->discount.'%' : 'Rp '.number_format($promo->discount,0,',','.') }}
                 </option>
             @endforeach
         </select>
