@@ -17,7 +17,11 @@ return new class extends Migration
             $table->integer('discount');
             $table->enum('type', ['percent', 'rupiah']);
             $table->boolean('activated')->default(true);
-            $table->date('valid_until')->nullable()->after('discount');
+
+            // periode promo
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

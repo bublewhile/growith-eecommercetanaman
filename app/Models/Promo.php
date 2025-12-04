@@ -13,13 +13,13 @@ class Promo extends Model
         'promo_code',
         'discount',
         'type',
-        'valid_until',
-        'activated',
+        'start_date',
+        'end_date',
     ];
 
     protected $casts = [
-        'valid_until' => 'date',
-        'activated'   => 'boolean',
+        'start_date' => 'date',
+        'end_date'   => 'date',
     ];
 
     // Format diskon untuk ditampilkan di index/trash
@@ -30,22 +30,14 @@ class Promo extends Model
             : 'Rp ' . number_format($this->discount, 0, ',', '.');
     }
 
-    // Badge status aktif/nonaktif
-    public function getStatusBadgeAttribute()
+    // Status validitas promo berdasarkan tanggal
+    public function getStartDateFormattedAttribute()
     {
-        return $this->activated
-            ? '<span class="badge bg-success">Aktif</span>'
-            : '<span class="badge bg-secondary">Nonaktif</span>';
+        return $this->start_date ? $this->start_date->format('d M Y') : '-';
     }
 
-    public function getValidityStatusAttribute()
+    public function getEndDateFormattedAttribute()
     {
-        if (!$this->valid_until) {
-            return '<span class="badge bg-secondary">Tidak ada tanggal</span>';
-        }
-
-        return now()->gt($this->valid_until)
-            ? '<span class="badge bg-danger">Invalid</span>'
-            : '<span class="badge bg-success">Valid</span>';
+        return $this->end_date ? $this->end_date->format('d M Y') : '-';
     }
 }
