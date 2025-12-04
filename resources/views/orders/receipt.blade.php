@@ -3,12 +3,10 @@
 @section('content')
 <div class="card w-50 d-block mx-auto my-5 p-4">
     <div class="card-body">
-        {{-- Tombol Unduh PDF --}}
         <div class="d-flex justify-content-end mb-4">
             <a href="{{ route('orders.pdf', $order->id) }}" class="btn btn-secondary">Unduh (.pdf)</a>
         </div>
 
-        {{-- Ringkasan Order --}}
         <div class="w-100 mb-4">
             <h5 class="text-center mb-3">{{ $order->product->name }}</h5>
             <hr>

@@ -31,13 +31,11 @@
 
     <div class="container py-5">
 
-        {{-- Breadcrumb --}}
         <p class="text-muted mb-4">
             Home / {{ $product->category->name ?? 'Kategori' }} / <strong>{{ $product->name }}</strong>
         </p>
 
         <div class="row g-5">
-            {{-- LEFT: Gambar --}}
             <div class="col-md-6">
                 <img id="mainImage" src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded shadow-sm mb-3"
                     alt="{{ $product->name }}">
@@ -51,7 +49,6 @@
                 </div>
             </div>
 
-            {{-- RIGHT: Detail --}}
             <div class="col-md-6">
                 <h2 class="fw-bold text-success">{{ $product->name }}</h2>
 
@@ -66,7 +63,6 @@
                 <p class="text-muted">Stok: {{ $product->stock }}</p>
                 <p class="mb-4">{{ $product->description ?? 'Tidak ada deskripsi produk.' }}</p>
 
-                {{-- Form Pembelian --}}
                 @auth
                     <form action="{{ route('orders.create', ['productId' => $product->id]) }}" method="POST">
                         @csrf
@@ -128,7 +124,6 @@
             </div>
         </div>
 
-        {{-- TAB MENU --}}
         <div class="mt-5">
             <div class="d-flex gap-4 border-bottom pb-2">
                 <span class="tab-btn active" onclick="openTab('desc', this)">Deskripsi</span>
@@ -169,7 +164,6 @@
             </div>
         </div>
 
-        {{-- RELATED PRODUCTS --}}
         <div class="mt-5 pt-4">
             <h3 class="fw-bold text-success mb-4">Explore Related Products</h3>
 
@@ -191,7 +185,6 @@
         </div>
     </div>
 
-    {{-- SCRIPT --}}
     <script>
         function changeImage(el) {
             document.getElementById("mainImage").src = el.src;

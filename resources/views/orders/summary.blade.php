@@ -23,7 +23,6 @@
 
         {{-- Bagian poster + detail kiri --}}
         <div class="row">
-            {{-- Poster --}}
             <div class="col-md-3 d-flex justify-content-center">
                 <img src="{{ $order->product->image ? asset('storage/' . $order->product->image) : 'https://via.placeholder.com/250x350?text=Product' }}"
                      class="img-fluid rounded shadow-sm"

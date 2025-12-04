@@ -50,7 +50,7 @@
 </style>
 
 <div class="w-75 d-block mx-auto my-5">
-    <form method="POST" action="{{ route('admin.category.update', $kategori->id) }}" class="card card-elegant p-4">
+    <form method="POST" action="{{ route('admin.category.update', $category->id) }}" class="card card-elegant p-4">
         @csrf
         @method('PUT')
 

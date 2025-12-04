@@ -44,49 +44,46 @@
 <body>
     <div class="wrapper">
         <h2>Growith Order</h2>
-
-        {{-- QR / Barcode --}}
         <div style="text-align:center; margin: 20px 0;">
             <img src="{{ base_path('public/storage/' . $order->orderPayment->barcode) }}" class="barcode">
         </div>
 
-        {{-- Info Penerima --}}
         <div class="row">
             <span>Nama Penerima</span>
             <span>{{ $order->user->nama_lengkap ?? '-' }}</span>
         </div>
+
         <div class="row">
             <span>Alamat</span>
             <span>{{ $order->user->alamat ?? '-' }}, {{ $order->user->kota ?? '-' }}, {{ $order->user->provinsi ?? '-' }}</span>
         </div>
+
         <div class="row">
             <span>No. HP</span>
             <span>{{ $order->user->no_hp ?? '-' }}</span>
         </div>
 
         <hr>
-
-        {{-- Produk --}}
         <div class="row">
             <span>Produk</span>
             <span>{{ $order->product->name }}</span>
         </div>
+
         <div class="row">
             <span>Jumlah</span>
             <span>{{ $order->quantity }}</span>
         </div>
+
         <div class="row">
             <span>Harga Satuan</span>
             <span>Rp {{ number_format($order->product->price, 0, ',', '.') }}</span>
         </div>
 
-        {{-- Biaya Layanan --}}
         <div class="row">
             <span>Biaya Layanan</span>
             <span>Rp {{ number_format($order->shipping_fee, 0, ',', '.') }}</span>
         </div>
 
-        {{-- Promo --}}
         <div class="row">
             <span>Promo</span>
             <span>
@@ -100,7 +97,6 @@
 
         <hr>
 
-        {{-- Total --}}
         @php
             $total = $order->total_price + $order->shipping_fee;
         @endphp

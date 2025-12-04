@@ -2,7 +2,6 @@
 
 @section('content')
 <style>
-    /* ===== GROWITH GREEN AESTHETIC FORM ===== */
     .growith-wrapper {
         background: #f4f7f2;
         padding: 40px;
@@ -55,8 +54,7 @@
     .growith-btn:hover {
         background: #256628;
     }
-
-    /* animation */
+    
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(8px); }
         to { opacity: 1; transform: translateY(0); }
