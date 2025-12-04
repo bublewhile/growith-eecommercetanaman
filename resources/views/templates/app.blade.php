@@ -210,7 +210,6 @@
                     </a>
                     <a href="{{ route('staff.orders.index') }}">
                         <span class="label"><i class="fa-solid fa-calendar"></i> Kelola Pesanan</span>
-                        <span class="badge">5</span>
                     </a>
                     <a href="{{ route('staff.promos.index') }}">
                         <span class="label"><i class="fa-solid fa-tag"></i> Promo</span>
