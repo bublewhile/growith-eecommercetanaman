@@ -9,12 +9,6 @@
         @endif
         <h3 class="fw-bold text-success mb-4">Admin Dashboard 🌱</h3>
 
-        @if (Session::get('success'))
-            <div class="alert alert-success">
-                {{ Session::get('success') }} <b>{{ Auth::user()->name }}</b>!
-            </div>
-        @endif
-
         <div class="row g-4">
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
