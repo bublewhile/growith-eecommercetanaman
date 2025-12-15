@@ -208,9 +208,6 @@
                         class="{{ Request::is('staff/dashboard') ? 'active' : '' }}">
                         <span class="label"><i class="fa-solid fa-house"></i> Dashboard</span>
                     </a>
-                    <a href="{{ route('staff.orders.index') }}">
-                        <span class="label"><i class="fa-solid fa-calendar"></i> Kelola Pesanan</span>
-                    </a>
                     <a href="{{ route('staff.promos.index') }}">
                         <span class="label"><i class="fa-solid fa-tag"></i> Promo</span>
                     </a>

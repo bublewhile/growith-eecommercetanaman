@@ -9,7 +9,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\CommentsController;
-use App\Http\Controllers\ResponseController;
 
 // Route untuk user (halaman depan)
 Route::get('/', [ProductController::class, 'home'])->name('home');
@@ -134,11 +133,6 @@ Route::middleware('isStaff')->prefix('/staff')->name('staff.')->group(function (
         Route::patch('/restore/{id}', [PromoController::class, 'restore'])->name('restore');
         Route::delete('/delete-permanent/{id}', [PromoController::class, 'deletePermanent'])->name('delete_permanent');
         Route::get('/datatables', [PromoController::class, 'dataForDataTables'])->name('datatables');
-    });
-
-    Route::prefix('/response')->name('response.')->group(function() {
-        Route::get('/{order_id}', [ResponseController::class, 'edit'])->name('edit');
-        Route::put('/{order_id}', [ResponseController::class, 'update'])->name('update');
     });
 
 });
