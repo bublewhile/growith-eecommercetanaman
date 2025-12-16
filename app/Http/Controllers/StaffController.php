@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -8,8 +9,13 @@ class StaffController extends Controller
 {
     public function dashboard()
     {
-        $totalPromo = Promo::count();
+        $today = now();
+        $totalPromoAktif = Promo::whereDate('start_date', '<=', $today)->whereDate('end_date', '>=', $today)->count();
 
-        return view('staff.dashboard', compact('totalPromo'));
+        $totalPromoTidakAktif = Promo::where(function ($q) use ($today) {
+            $q->whereDate('end_date', '<', $today)->orWhereDate('start_date', '>', $today);
+        })->count();
+
+        return view('staff.dashboard', compact('totalPromoAktif', 'totalPromoTidakAktif'));
     }
 }

@@ -16,7 +16,7 @@ class ProductController extends Controller
     // Halaman home: tampilkan produk terbaru
     public function home()
     {
-        $products = Product::where('actived', 1)->orderBy('created_at', 'DESC')->limit(8)->get();
+        $products = Product::where('actived', 1)->orderBy('created_at', 'DESC')->get();
         $categories = Category::orderBy('created_at', 'DESC')->get();
 
         return view('home', compact('products', 'categories'));

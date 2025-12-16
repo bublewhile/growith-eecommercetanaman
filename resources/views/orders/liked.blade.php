@@ -21,9 +21,11 @@
                         <p class="text-muted mb-1">Kategori: {{ $product->category->name ?? '-' }}</p>
                         <p class="fw-bold text-success mb-2">Rp {{ number_format($product->price,0,',','.') }}</p>
 
-                        <a href="{{ route('orders.detail', $product->id) }}" class="btn btn-sm btn-success mt-auto">
-                            Lihat Detail
-                        </a>
+                        <p class="card-text text-center bg-success py-2 mt-3">
+                            <a href="{{ route('products.detail', $product->id) }}" class="text-white">
+                                <b>Lihat Detail</b>
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>

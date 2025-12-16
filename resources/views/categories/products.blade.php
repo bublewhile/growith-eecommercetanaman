@@ -1,40 +1,53 @@
 @extends('templates.app')
 
-@section('content')
-<section class="text-center fade-in py-5 bg-white">
-    <h2 class="fw-normal" style="font-family:'Playfair Display'; font-size:1.5rem; color:#2c2c54;">
-        Produk Kategori: {{ $category->name }}
-    </h2>
-    <hr class="mx-auto mt-3 mb-5" style="width:100px; border:1px solid #2c2c54;">
+@section('title', 'Produk Kategori: '.$category->name)
 
-    <div class="container">
-        <div class="row g-4">
-            @forelse ($products as $product)
-                <div class="col-md-3 col-sm-6">
-                    <div class="card border-0 shadow-0 h-100">
-                        <div class="position-relative">
-                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                            @if (!empty($product->discount))
-                                <span class="badge bg-danger position-absolute top-0 start-0 m-2">{{ $product->discount }}</span>
+@section('content')
+<div class="container py-5">
+    <h2 class="fw-bold mb-4 text-success">Produk Kategori: {{ $category->name }}</h2>
+
+    <div class="row">
+        @forelse($products as $product)
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm position-relative">
+                    {{-- Gambar produk --}}
+                    @if($product->image)
+                        <img src="{{ asset('storage/'.$product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                    @else
+                        <img src="{{ asset('images/default-product.jpg') }}" class="card-img-top" alt="{{ $product->name }}">
+                    @endif
+
+                    <div class="card-body d-flex flex-column">
+                        {{-- Nama produk --}}
+                        <h5 class="card-title fw-bold text-truncate">{{ $product->name }}</h5>
+
+                        {{-- Nama kategori --}}
+                        <p class="text-muted mb-1">Kategori: {{ $product->category->name ?? '-' }}</p>
+
+                        {{-- Harga produk --}}
+                        <p class="fw-bold text-success mb-2">
+                            Rp {{ number_format($product->price,0,',','.') }}
+                            @if(!empty($product->old_price))
+                                <span class="text-muted text-decoration-line-through">
+                                    Rp {{ number_format($product->old_price,0,',','.') }}
+                                </span>
                             @endif
-                        </div>
-                        <div class="card-body text-center">
-                            <h6 class="fw-bold mb-2">{{ $product->name }}</h6>
-                            <p class="fw-bold mb-0 text-success">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}
-                                @if (!empty($product->old_price))
-                                    <span class="text-muted text-decoration-line-through">
-                                        Rp {{ number_format($product->old_price, 0, ',', '.') }}
-                                    </span>
-                                @endif
-                            </p>
-                        </div>
+                        </p>
+
+                        {{-- Tombol detail --}}
+                        <p class="card-text text-center bg-success py-2 mt-3">
+                            <a href="{{ route('products.detail', $product->id) }}" class="text-white">
+                                <b>Lihat Detail</b>
+                            </a>
+                        </p>
                     </div>
                 </div>
-            @empty
+            </div>
+        @empty
+            <div class="col-12 text-center">
                 <p class="text-muted">Belum ada produk di kategori ini.</p>
-            @endforelse
-        </div>
+            </div>
+        @endforelse
     </div>
-</section>
+</div>
 @endsection

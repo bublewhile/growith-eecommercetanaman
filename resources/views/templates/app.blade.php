@@ -224,6 +224,9 @@
                             <span class="badge">{{ $favoriteCount }}</span>
                         @endif
                     </a>
+                    <a href="{{ route('orders.index')}}">
+                        <span class="label"><i class="fa-solid fa-circle-check"></i> Orders</span>
+                    </a>
                 @endif
 
                 @if (Auth::check())

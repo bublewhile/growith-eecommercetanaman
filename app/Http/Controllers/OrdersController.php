@@ -66,58 +66,58 @@ class OrdersController extends Controller
 
     // Buat Invoice & QR
     public function createInvoice(Request $request, $orderId)
-{
-    $request->validate([
-        'payment_method' => 'required|in:stripe,cod,bank_bri'
-    ]);
+    {
+        $request->validate([
+            'payment_method' => 'required|in:cod,bank_bri'
+        ]);
 
-    $order = Orders::find($orderId);
-    if (!$order) {
-        return response()->json([
-            'message' => 'Order tidak ditemukan'
-        ], 404);
-    }
-
-    $invoiceCode = 'ORDER' . $orderId . rand(100, 999);
-    $qrImage = QrCode::format('svg')->size(300)->margin(2)->generate($invoiceCode);
-
-    $fileName = $invoiceCode . '.svg';
-    $path = 'invoices/' . $fileName;
-    Storage::disk('public')->put($path, $qrImage);
-
-    // Create Payment
-    $createData = OrderPayment::create([
-        'order_id' => $orderId,
-        'barcode' => $path,
-        'status' => 'process',
-        'booked_date' => now()
-    ]);
-
-    // Simpan metode pembayaran
-    $order->payment_method = $request->payment_method;
-    $order->save();
-
-    // Hitung Promo
-    if ($request->promo_id != null) {
-        $promo = Promo::find($request->promo_id);
-
-        if ($promo) {
-            $discount = $promo->type == 'percent'
-                ? $order->total_price * $promo->discount / 100
-                : $promo->discount;
-
-            $order->update([
-                'promo_id' => $promo->id,
-                'total_price' => $order->total_price - $discount
-            ]);
+        $order = Orders::find($orderId);
+        if (!$order) {
+            return response()->json([
+                'message' => 'Order tidak ditemukan'
+            ], 404);
         }
-    }
 
-    return response()->json([
-        'message' => 'Berhasil membuat invoice pembayaran',
-        'data' => $createData
-    ]);
-}
+        $invoiceCode = 'ORDER' . $orderId . rand(100, 999);
+        $qrImage = QrCode::format('svg')->size(300)->margin(2)->generate($invoiceCode);
+
+        $fileName = $invoiceCode . '.svg';
+        $path = 'invoices/' . $fileName;
+        Storage::disk('public')->put($path, $qrImage);
+
+        // Create Payment
+        $createData = OrderPayment::create([
+            'order_id' => $orderId,
+            'barcode' => $path,
+            'status' => 'process',
+            'booked_date' => now()
+        ]);
+
+        // Simpan metode pembayaran
+        $order->payment_method = $request->payment_method;
+        $order->save();
+
+        // Hitung Promo
+        if ($request->promo_id != null) {
+            $promo = Promo::find($request->promo_id);
+
+            if ($promo) {
+                $discount = $promo->type == 'percent'
+                    ? $order->total_price * $promo->discount / 100
+                    : $promo->discount;
+
+                $order->update([
+                    'promo_id' => $promo->id,
+                    'total_price' => $order->total_price - $discount
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Berhasil membuat invoice pembayaran',
+            'data' => $createData
+        ]);
+    }
 
     public function paymentPage($orderId)
     {
@@ -136,7 +136,6 @@ class OrdersController extends Controller
         return redirect()->route('orders.receipt', $orderId);
     }
 
-
     public function receipt($orderId)
     {
         $order = Orders::where('id', $orderId)->with(['product', 'orderPayment'])->first();
@@ -152,7 +151,6 @@ class OrdersController extends Controller
         $fileName = 'ORDER' . $order->id . '.pdf';
         return $pdf->download($fileName);
     }
-
 
     public function createOrder(Request $request, $productId)
     {
@@ -229,22 +227,21 @@ class OrdersController extends Controller
             ->with('success_message', 'Alamat berhasil disimpan, lanjut ke ringkasan order.');
     }
 
-    public function dataPetugas()
+    public function index()
     {
-        $orders = Orders::with(['product', 'orderPayment', 'promo', 'user'])
-            ->latest()
+        // Pesanan aktif: belum lewat 3 hari & sudah dibayar
+        $ordersActive = Orders::with('product')
+            ->whereHas('orderPayment', fn($q) => $q->whereNotNull('paid_date'))
+            ->whereDate('created_at', '>=', now()->subDays(3))
             ->get();
 
-        return view('staff.manage-product.data', compact('orders'));
-    }
-
-    public function dataStatus()
-    {
-        $orders = Orders::with(['product', 'orderPayment', 'promo', 'user'])
-            ->latest()
+        // Pesanan kadaluarsa: lewat 3 hari & sudah dibayar
+        $ordersExpired = Orders::with('product')
+            ->whereHas('orderPayment', fn($q) => $q->whereNotNull('paid_date'))
+            ->whereDate('created_at', '<', now()->subDays(3))
             ->get();
 
-        return view('staff.manage-product.data', compact('orders'));
+        return view('order.index', compact('ordersActive', 'ordersExpired'));
     }
 
     /**
@@ -280,19 +277,8 @@ class OrdersController extends Controller
      */
     public function update(Request $request, Orders $orders)
     {
-        $request->validate([
-            'response' => 'required|string|max:500'
-        ]);
-
-        $orders->update([
-            'response' => $request->response,
-            'status'   => 'responded' // opsional
-        ]);
-
-        return redirect()->route('staff.manage')
-                        ->with('success_message', 'Response berhasil diperbarui.');
+        //
     }
-
 
     /**
      * Remove the specified resource from storage.

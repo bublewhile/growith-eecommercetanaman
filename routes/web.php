@@ -41,6 +41,11 @@ Route::middleware(['auth','alamat.wajib'])->group(function () {
     Route::get('/orders/{orderId}/payment', [OrdersController::class, 'paymentPage'])->name('orders.payment');
 });
 
+// Route untuk user melihat daftar pesanan
+Route::middleware('auth')->group(function () {
+    Route::get('/orders/list', [OrdersController::class, 'index'])->name('orders.index');
+});
+
 Route::post('/products/{id}/comment', [CommentsController::class, 'store'])->name('products.comment')->middleware('auth');
 
 // Route::get('/', function () {
